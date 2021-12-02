@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+	<title>From Data to UI</title>
+	<script type="application/javascript" src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>
+	<script type="application/javascript" src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
+	<script type="application/javascript" src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+	
+	
+	<style>
+	    #container {
+		    padding: 50px;
+			background-color: #FFF;
+		}
+	</style>
+</head>
+
+<body>
+    <div id="container"></div>
+	
+	
+	<script type="text/babel">
+
+	const colors = ["#393E41", "#E94F37", "#1C89BF", "#A1D363","#85FFC7", "#297373", "#FF8552", "#A40E4C", "#FFF000"];
+
+	class Circle extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			circleStyle: {
+				padding: 10,
+				margin: 20,
+				display: "inline-block",
+				backgroundColor: colors[Math.floor(Math.random() * colors.length)], 
+				borderRadius: Math.floor(Math.random() * 100),
+				width:  (Math.floor(Math.random() * 150) + 150),
+				height: (Math.floor(Math.random() * 150) + 150)
+			}
+		};
+	}
+
+	componentDidMount() {
+		this.timerID = setInterval(
+		() => this.changeStyle(),
+		1000
+		);
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.timerID);
+	}
+
+	changeStyle() {
+		let colorIndex = Math.floor(Math.random() * colors.length);
+		let radiusValue = Math.floor(Math.random() * 100);
+		let widthValue = Math.floor(Math.random() * 150) + 150;
+		let heighthValue = Math.floor(Math.random() * 150) + 150;
+
+		this.setState({
+			circleStyle: {
+				padding: 10,
+				margin: 20,
+				display: "inline-block",
+				backgroundColor: colors[colorIndex],
+				borderRadius: radiusValue,
+				width: widthValue,
+				height: heighthValue
+			}
+		});
+	}
+
+	render() {
+
+    return (
+      <div style={this.state.circleStyle}>
+      </div>
+    );
+  }
+}
+
+let renderData = [];
+
+for (let i = 0; i < colors.length; i++) {
+	renderData.push(<Circle key={i} />);
+}
+
+ReactDOM.render(
+	<div>
+		{renderData}
+	</div>,
+	document.querySelector("#container")
+);
+
+
+	</script>
+</body>
+</html>
